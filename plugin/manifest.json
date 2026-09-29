@@ -1,0 +1,76 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "UUID": "com.kirkanos.renovate",
+  "Name": "Renovate Queue",
+  "Version": "0.0.0.0",
+  "Author": "Andreas Hacker",
+  "Description": "Open Renovate pull requests across your GitHub repos, merged from the Stream Deck.",
+  "URL": "https://github.com/kirkanos/Streamdeck-Renovate",
+  "Icon": "images/icon",
+  "Category": "Renovate Queue",
+  "CategoryIcon": "images/category",
+  "CodePath": "bin/plugin.js",
+  "SDKVersion": 3,
+  "Nodejs": {
+    "Version": "24",
+    "Debug": "enabled"
+  },
+  "Software": {
+    "MinimumVersion": "7.1"
+  },
+  "OS": [
+    {
+      "Platform": "mac",
+      "MinimumVersion": "12"
+    },
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "Actions": [
+    {
+      "UUID": "com.kirkanos.renovate.queue",
+      "Name": "Queue",
+      "Icon": "images/actions/queue",
+      "Tooltip": "Number and check status of the open Renovate pull requests; press to browse them, hold to merge",
+      "PropertyInspectorPath": "ui/queue.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "images/key",
+          "TitleAlignment": "top",
+          "FontSize": 10
+        }
+      ]
+    },
+    {
+      "UUID": "com.kirkanos.renovate.dial",
+      "Name": "Dial Queue",
+      "Icon": "images/actions/dial",
+      "Tooltip": "Browse the open Renovate pull requests with the dial; push to merge, tap to open in the browser",
+      "PropertyInspectorPath": "ui/dial.html",
+      "Controllers": [
+        "Encoder"
+      ],
+      "Encoder": {
+        "layout": "layouts/dial.json",
+        "Icon": "images/actions/dial",
+        "TriggerDescription": {
+          "Rotate": "Next / previous pull request",
+          "Push": "Merge the pull request shown",
+          "Touch": "Open the pull request in the browser"
+        }
+      },
+      "SupportedInMultiActions": false,
+      "States": [
+        {
+          "Image": "images/key"
+        }
+      ]
+    }
+  ]
+}

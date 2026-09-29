@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dial queue settings</title>
+    <script src="sdpi-components.js"></script>
+    <script src="connection.js"></script>
+    <link rel="stylesheet" href="pi.css" />
+  </head>
+  <body>
+    <div id="gh-connection"></div>
+
+    <div class="requires-token" hidden>
+      <sdpi-item label="Merge method">
+        <sdpi-select setting="mergeMethod" default="squash">
+          <option value="squash">Squash and merge</option>
+          <option value="merge">Create a merge commit</option>
+          <option value="rebase">Rebase and merge</option>
+        </sdpi-select>
+      </sdpi-item>
+
+      <sdpi-item label="Repositories">
+        <sdpi-checkbox-list setting="repos" datasource="getRepos" hot-reload loading="Loading repositories…"></sdpi-checkbox-list>
+      </sdpi-item>
+      <p class="hint">Lists the repositories with open Renovate pull requests. Nothing selected = all repositories.</p>
+
+      <sdpi-item label="Major updates">
+        <sdpi-checkbox setting="hideMajors" label="Hide major version updates"></sdpi-checkbox>
+      </sdpi-item>
+
+      <p class="hint">
+        Turn the dial to browse the open Renovate pull requests; the touch strip shows repository, title and
+        check status. Push the dial to merge the pull request shown, tap the strip to open it in the browser.
+        Pull requests with merge conflicts are never merged.
+      </p>
+    </div>
+  </body>
+</html>

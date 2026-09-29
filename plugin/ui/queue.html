@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Queue settings</title>
+    <script src="sdpi-components.js"></script>
+    <script src="connection.js"></script>
+    <link rel="stylesheet" href="pi.css" />
+  </head>
+  <body>
+    <div id="gh-connection"></div>
+
+    <div class="requires-token" hidden>
+      <sdpi-item label="Merge method">
+        <sdpi-select setting="mergeMethod" default="squash">
+          <option value="squash">Squash and merge</option>
+          <option value="merge">Create a merge commit</option>
+          <option value="rebase">Rebase and merge</option>
+        </sdpi-select>
+      </sdpi-item>
+
+      <sdpi-item label="Repositories">
+        <sdpi-checkbox-list setting="repos" datasource="getRepos" hot-reload loading="Loading repositories…"></sdpi-checkbox-list>
+      </sdpi-item>
+      <p class="hint">Lists the repositories with open Renovate pull requests. Nothing selected = all repositories.</p>
+
+      <sdpi-item label="Major updates">
+        <sdpi-checkbox setting="hideMajors" label="Hide major version updates"></sdpi-checkbox>
+      </sdpi-item>
+
+      <p class="hint">
+        The key shows the number of open Renovate pull requests: green when all checks passed, yellow while checks
+        run, red when a check failed. Press to browse the pull requests one by one, hold the key (0.6 s) to merge
+        the one shown. Pull requests with merge conflicts are shown with a warning and are never merged. After 15 s
+        without input the key returns to the summary.
+      </p>
+    </div>
+  </body>
+</html>

@@ -62,6 +62,25 @@ export function queueCaption(summary: QueueSummary): string {
  * Shortens a Renovate PR title for a key: drops the conventional-commit
  * prefix and turns "Update dependency x to v2" into "x → v2".
  */
+/**
+ * What a Renovate pull request updates, split for the key: the dependency
+ * ("postgres", "@elgato/streamdeck") and the target version ("v18"). Noise
+ * like "Docker tag", "action" or "dependency" is dropped so the name stays
+ * big and readable. Titles that are not updates come back as `subject` only.
+ */
+export function prSubject(title: string): { subject: string; version?: string } {
+  const compact = compactTitle(title);
+  const arrow = compact.indexOf(" → ");
+  if (arrow < 0) {
+    return { subject: compact };
+  }
+  const subject = compact
+    .slice(0, arrow)
+    .replace(/\s+(docker\s+tag|docker\s+image|helm\s+release|github\s+action|action|dependency|monorepo|packages)$/i, "")
+    .trim();
+  return { subject: subject || compact.slice(0, arrow), version: compact.slice(arrow + 3) };
+}
+
 export function compactTitle(title: string): string {
   let text = title.trim().replace(/^[a-z]+(\([^)]*\))?!?:\s*/i, "");
   const update = text.match(/^(?:update|upgrade)\s+(?:dependency\s+)?(.+?)\s+to\s+(\S+?)\s*(\(.*\))?$/i);

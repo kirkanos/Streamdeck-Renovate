@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { type PullRequest, summarize } from "../github/model";
 import { dialCanvas, dialSummary } from "./dial";
-import { checkLabel, checkWord, compactTitle, queueCaption } from "./format";
+import { checkLabel, checkWord, compactTitle, prSubject, queueCaption } from "./format";
 import { messageKey, prKey, queueKey } from "./keys";
 import { escapeXml, wrapText } from "./svg";
 import { THEME } from "./theme";
@@ -21,6 +21,16 @@ const pr = (over: Partial<PullRequest> = {}): PullRequest => ({
 });
 
 const decode = (dataUrl: string) => Buffer.from(dataUrl.split(",")[1], "base64").toString("utf8");
+
+describe("prSubject", () => {
+  it("splits dependency and version and drops the noise", () => {
+    expect(prSubject("Update postgres Docker tag to v18")).toEqual({ subject: "Postgres", version: "v18" });
+    expect(prSubject("Update gitea/gitea Docker tag to v28")).toEqual({ subject: "Gitea/gitea", version: "v28" });
+    expect(prSubject("Update actions/checkout action to v7")).toEqual({ subject: "Actions/checkout", version: "v7" });
+    expect(prSubject("chore(deps): update dependency vitest to v5")).toEqual({ subject: "Vitest", version: "v5" });
+    expect(prSubject("Lock file maintenance")).toEqual({ subject: "Lock file maintenance" });
+  });
+});
 
 describe("compactTitle", () => {
   it("drops the conventional commit prefix and shortens updates", () => {
@@ -93,7 +103,8 @@ describe("key images", () => {
     const svg = decode(prKey({ repo: "kirkanos/r&d", title: "Update <x> to v2", checks: "pending", mergeable: "MERGEABLE", position: 2, total: 5 }));
     expect(svg).toContain("r&amp;d");
     expect(svg).not.toContain("<x>");
-    expect(svg).toContain("&lt;x&gt; → v2");
+    expect(svg).toContain(">&lt;x&gt;<");
+    expect(svg).toContain(">→ v2<");
     expect(svg).toContain("2 / 5");
     expect(svg).toContain("running");
   });

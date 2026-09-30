@@ -1,6 +1,6 @@
 import type { CheckState, Mergeable, PullRequest, QueueSummary } from "../github/model";
 import { shortRepo } from "../github/model";
-import { checkWord, compactTitle, prColor, queueCaption, STATUS_COLOR } from "./format";
+import { checkWord, prColor, prSubject, queueCaption, STATUS_COLOR } from "./format";
 import { background, mix, svg, text, toDataUrl, truncate, wrapText } from "./svg";
 import { THEME } from "./theme";
 
@@ -64,9 +64,15 @@ export function prKey(k: PrKey): string {
 
   // A warning triangle or "major" badge sits in the top-right corner; the repo name then keeps to the left.
   const hasBadge = conflict || Boolean(k.major);
-  const repo = text(truncate(shortRepo(k.repo), hasBadge ? 9 : 14), { x: hasBadge ? 52 : S / 2, y: 27, size: 16, weight: 700 });
-  const lines = wrapText(compactTitle(k.title), 15, 3);
-  const title = lines.map((line, i) => text(line, { x: S / 2, y: 52 + i * 18, size: 14, weight: 600, opacity: 0.92 })).join("");
+  const repo = text(truncate(shortRepo(k.repo), hasBadge ? 9 : 12), { x: hasBadge ? 52 : S / 2, y: 28, size: 18, weight: 700 });
+
+  // The dependency big, the target version below it; long names shrink and wrap to two lines.
+  const { subject, version } = prSubject(k.title);
+  const subjectLines = wrapText(subject, 11, 2);
+  const subjectSize = subjectLines.length > 1 || subject.length > 9 ? 20 : 24;
+  const subjectY = version ? (subjectLines.length > 1 ? 54 : 62) : subjectLines.length > 1 ? 62 : 74;
+  const title = subjectLines.map((line, i) => text(line, { x: S / 2, y: subjectY + i * (subjectSize + 2), size: subjectSize, weight: 800 })).join("");
+  const versionText = version ? text(truncate(`→ ${version}`, 11), { x: S / 2, y: 106, size: version.length > 7 ? 20 : 24, weight: 800, opacity: 0.95 }) : "";
 
   const warning = conflict
     ? `<path d="M 118 14 L 132 38 L 104 38 Z" fill="#FFFFFF" fill-opacity="0.95"/>` +
@@ -85,7 +91,7 @@ export function prKey(k: PrKey): string {
     anchor: "end",
   });
 
-  return toDataUrl(svg(S, S, bg + accent + repo + title + warning + majorBadge + footerLeft + footerRight));
+  return toDataUrl(svg(S, S, bg + accent + repo + title + versionText + warning + majorBadge + footerLeft + footerRight));
 }
 
 /** Neutral key with two lines of text, e.g. "Add token / see settings" or "Offline". */

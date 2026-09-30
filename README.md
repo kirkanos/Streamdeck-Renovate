@@ -33,8 +33,8 @@ The plugin needs a [fine-grained personal access token](https://github.com/setti
 4. **Repository permissions**:
    * **Pull requests**: *Read and write* (list and merge the pull requests)
    * **Contents**: *Read and write* (merging writes to the default branch)
-   * **Checks**: *Read-only* (check status)
-   * **Commit statuses**: *Read-only* (status of legacy status checks)
+   * **Commit statuses**: *Read-only* (check status of the pull requests)
+   * **Checks**: *Read-only*, if your token page offers it (check runs of GitHub Actions; not every account sees this permission)
    * **Metadata**: *Read-only* (selected automatically)
 
 Paste the token into the key settings and press *Save*. It is stored in the plugin's global settings and only sent to `api.github.com`. *Remove token* deletes it again.

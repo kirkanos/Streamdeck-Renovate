@@ -1,6 +1,6 @@
 # Streamdeck-Renovate
 
-Stream Deck plugin `com.kirkanos.renovate`. Status: M1–M3 implemented (see README.md); M4 (release `v1.0.0`) open.
+Stream Deck plugin `com.kirkanos.renovate`. Status: M1–M4 done, released 1.0.0.
 
 ## Goal
 

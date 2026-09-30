@@ -1,6 +1,6 @@
 {
   "name": "streamdeck-renovate",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Renovate Queue: Open Renovate pull requests across your GitHub repos, merged from the Stream Deck.",
